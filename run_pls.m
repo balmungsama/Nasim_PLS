@@ -1,7 +1,7 @@
 
 OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
 BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
-BEHAV_vars = {'meanRT_GO', 'sigma'} ;
+BEHAV_vars = {'meanRT_GO'} ;
 VAR_NORM   = 2
 
 % var_norm = mean centering/normalization method applied to both X
