@@ -1,8 +1,15 @@
 
-OPPNI_dir = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
-BEHAV_dir = '/home/hpc3586/SART_data/SART_behav/Older' ;
-
+OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
+BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
 BEHAV_vars = {'meanRT_GO', 'sigma'} ;
+VAR_NORM   = 2
+
+% var_norm = mean centering/normalization method applied to both X
+%            and Y matrices  
+%
+%        0 = no normalization, directly use input values 
+%        1 = (column wise) mean centring  of X and Y 
+%        2 = zscore X and Y
 
 %% build file paths %%
 
@@ -92,3 +99,5 @@ for subj = behav_ls
 	end	
 
 end
+
+[avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, ) ;
