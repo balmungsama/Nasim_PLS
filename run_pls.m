@@ -1,4 +1,6 @@
 
+OUTPUT_dir = '/home/hpc3586/JE_packages/Nasim_PLS/results'
+
 OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
 BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
 BEHAV_vars = {'meanRT_GO'} ;
@@ -101,3 +103,14 @@ for subj = behav_ls
 end
 
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
+
+results.avg_ZSalience_X = avg_ZSalience_X ;
+results.avg_ZSalience_Y = avg_ZSalience_Y ;
+results.pred_scores_X   = pred_scores_X   ;
+results.pred_scores_Y   = pred_scores_Y   ;
+results.pls_out         = pls_out         ;
+
+output_file = ['Older', '.mat'] ;
+output_file = fullfile(OUTPUT_dir, output_file) ;
+
+save(output_file, results) ;
