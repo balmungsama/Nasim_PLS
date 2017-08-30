@@ -113,4 +113,6 @@ results.pls_out         = pls_out         ;
 output_file = ['Older', '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
 
-save(output_file, results) ;
+save(output_file, 'results') ;
+
+exit
