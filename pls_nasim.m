@@ -28,10 +28,10 @@ function [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] 
 % -------------------------------------------------------------------------
 % Output:   "pls_out" list array of structures,includes results for every iteration of the leave-one-out  
 %         
-%             avg_ZSalience_X,avg_ZSalience_Y = bootstrap ratio for PLS components, averaged across leave-one-out iterations  
-%             
-%             
-%            pred_scores_X, pred_scores_Y  = predicted subject scores, calculated by projecting the left out subject on the 
+%         avg_ZSalience_X,avg_ZSalience_Y = bootstrap ratio for PLS components, averaged across leave-one-out iterations  
+%          
+%          
+%         pred_scores_X, pred_scores_Y  = predicted subject scores, calculated by projecting the left out subject on the 
 %                                             PLS component 
 %            
 %
