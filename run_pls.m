@@ -4,8 +4,8 @@ OUTPUT_dir = '/home/hpc3586/JE_packages/Nasim_PLS/results'
 OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
 BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
 BEHAV_vars = {'meanRT_GO'} ;
-VAR_NORM   = 2 ;
 PIPE       = 2 ; % 1 = CON, 2 = FIX, 3 = IND
+VAR_NORM   = 2 ;
 
 % var_norm = mean centering/normalization method applied to both X
 %            and Y matrices  
