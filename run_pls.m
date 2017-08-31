@@ -5,6 +5,7 @@ OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erC
 BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
 BEHAV_vars = {'meanRT_GO'} ;
 VAR_NORM   = 2 ;
+PIPE       = 2 ; % 1 = CON, 2 = FIX, 3 = IND
 
 % var_norm = mean centering/normalization method applied to both X
 %            and Y matrices  
@@ -73,6 +74,7 @@ for subj = behav_ls
 		spm = fullfile(OPPNI_dir, spm) ;
 		spm = load_nii(spm) ;
 		spm = spm.img ;
+		spm = spm(:,:,:, PIPE) ;														 % TODO: change this so that you can perform teh analysis on CON, FIX, and IND pipelines
 		spm = reshape(spm, [1, prod(size(spm))]) ;
 		spm = double(spm) ;
 
