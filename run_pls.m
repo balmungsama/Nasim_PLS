@@ -76,7 +76,7 @@ for subj = behav_ls
 		spm = fullfile(OPPNI_dir, spm) ;
 		spm = load_nii(spm) ;
 		spm = spm.img ;
-		spm = spm(:,:,:, PIPE) ;														 % TODO: change this so that you can perform teh analysis on CON, FIX, and IND pipelines
+		spm = spm(:,:,:, PIPE) ;														 
 		spm = reshape(spm, [1, prod(size(spm))]) ;
 		spm = double(spm) ;
 
@@ -114,7 +114,7 @@ results.pred_scores_X   = pred_scores_X   ;
 results.pred_scores_Y   = pred_scores_Y   ;
 results.pls_out         = pls_out         ;
 
-output_file = [GROUP, '.mat'] ;
+output_file = [GROUP, '_', BEHAV_vars{:}, '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
 
 save(output_file, 'results') ;
