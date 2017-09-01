@@ -13,9 +13,12 @@ PIPE=$5
 VAR_NORM=$6
 
 PLS_PATH='/home/hpc3586/JE_packages/Nasim_PLS'
-date=$(date +%F) # need to pass the date into Matlab too
-mkdir -p results/$date
-cd $PLS_PATH/results/$date
+date=$(date +%F) 
+
+OUTPUT_dir=$OUTPUT_dir/$date
+
+mkdir -p $OUTPUT_dir
+cd $OUTPUT_dir
 
 # extract behavioural variable names
 BEHAV_vars=($BEHAV_vars)
