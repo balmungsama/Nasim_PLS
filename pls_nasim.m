@@ -32,21 +32,21 @@ function [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] 
 %          
 %          
 %         pred_scores_X, pred_scores_Y  = predicted subject scores, calculated by projecting the left out subject on the 
-%                                             PLS component 
+%                                         PLS component 
 %            
 %
 %         pls_out.Salience_X, pls_out.Salience_Y    =  PLS components for X and Y,
-%                                       respectively 
+%                                                      respectively 
 % 
 %         pls_out.ZSalience_X, pls_out.ZSalience_Y  =  bootstrap ratio for PLS components for X and Y,
-%                                       respectively 
+%                                                      respectively 
 %         pls_out.latent_X, pls_out.latent_Y        =  projection of X and Y data onto the PLS components 
-%                                        (i.e scores) for N-1 subjects/samples from
-%                                        which the PLS componsnts are
-%                                        calculated 
+%                                                      (i.e scores) for N-1 subjects/samples from
+%                                                      which the PLS componsnts are
+%                                                      calculated 
 %
-%         pls_out.latent_X, pls_out.latent_Y        = projection of the left-out
-%                                     subject/sample onto the PLS components
+%         pls_out.latent_X, pls_out.latent_Y        =  projection of the left-out
+%                                                      subject/sample onto the PLS components
 %   
 %                        
 %-------------------------------------------------------------------------

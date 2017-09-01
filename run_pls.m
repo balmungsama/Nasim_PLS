@@ -1,8 +1,8 @@
 
 OUTPUT_dir = '/home/hpc3586/JE_packages/Nasim_PLS/results'
 
-OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Older/processing_GO_sart_old_erCVA_JE_erCVA' ;
-BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Older' ;
+OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Younger/processing_GO_sart_young_erCVA_JE_erCVA' ;
+BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Younger' ;
 BEHAV_vars = {'meanRT_GO'} ;
 PIPE       = 2 ; % 1 = CON, 2 = FIX, 3 = IND
 VAR_NORM   = 2 ;
@@ -112,7 +112,7 @@ results.pred_scores_X   = pred_scores_X   ;
 results.pred_scores_Y   = pred_scores_Y   ;
 results.pls_out         = pls_out         ;
 
-output_file = ['Older', '.mat'] ;
+output_file = ['Younger', '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
 
 save(output_file, 'results') ;
