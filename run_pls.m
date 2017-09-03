@@ -38,6 +38,8 @@ XX      = [] ;
 YY      = [] ;
 SUBJ_ls = {} ;
 
+disp('Compiling data...') ;
+
 run_count = 0 ;
 for subj = behav_ls
 
@@ -106,6 +108,8 @@ for subj = behav_ls
 
 end
 
+disp('Running Behavioural PLS analysis') ;
+
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
 
 results.avg_ZSalience_X = avg_ZSalience_X ;
@@ -113,6 +117,8 @@ results.avg_ZSalience_Y = avg_ZSalience_Y ;
 results.pred_scores_X   = pred_scores_X   ;
 results.pred_scores_Y   = pred_scores_Y   ;
 results.pls_out         = pls_out         ;
+
+disp('Saving results...') ;
 
 output_file = [GROUP, '_', BEHAV_vars{:}, '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
