@@ -53,4 +53,4 @@ MATLAB_COMMAND="$MATLAB_COMMAND;$PLS_RUN"
 
 echo $MATLAB_COMMAND
 
-matlab.exe -nosplash -nodesktop -r $MATLAB_COMMAND
+matlab -nosplash -nodesktop -r $MATLAB_COMMAND
