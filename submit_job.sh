@@ -28,24 +28,25 @@ for var in ${BEHAV_vars[@]}; do
 	BEHAV_vars_ls="$BEHAV_vars_ls '$var' "
 done
 
-PLScmd_OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
-PLScmd_OUTPUT_dir="OUTPUT_dir='$OUTPUT_dir'"
-PLScmd_BEHAV_dir="BEHAV_dir='$BEHAV_dir'"
-PLScmd_BEHAV_vars="BEHAV_vars={$BEHAV_vars_ls}"
-PLScmd_PIPE="PIPE=$PIPE"
-PLScmd_VAR_NORM="VAR_NORM=$VAR_NORM"
-PLScmd_DATE="'$date'"
+PLS_OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
+PLS_OUTPUT_dir="OUTPUT_dir='$OUTPUT_dir'"
+PLS_BEHAV_dir="BEHAV_dir='$BEHAV_dir'"
+PLS_BEHAV_vars="BEHAV_vars={$BEHAV_vars_ls}"
+PLS_PIPE="PIPE=$PIPE"
+PLS_VAR_NORM="VAR_NORM=$VAR_NORM"
 
-MATLAB_COMMAND=''
+# VARIABLE_LIST=($(compgen -v PLS_))
 
-VARIABLE_LIST=($(compgen -v PLScmd_))
+# MATLAB_COMMAND=''
+# for var in ${VARIABLE_LIST[@]}; do
+# 	var=$(echo $var)
+# 	MATLAB_COMMAND="$MATLAB_COMMAND $var;"
+# done
 
-for var in ${VARIABLE_LIST[@]}; do
-	MATLAB_COMMAND="$MATLAB_COMMAND $var;"
-done
+MATLAB_COMMAND="$PLS_OPPNI_dir;$PLS_OUTPUT_dir;$PLS_BEHAV_dir;$PLS_BEHAV_vars;$PLS_PIPE;$PLS_VAR_NORM"
 
-PLScmd_RUN="run('$PLS_PATH/run_pls.m')"
+PLS_RUN="run('$PLS_PATH/run_pls.m')"
 
-MATLAB_COMMAND2="$MATLAB_COMMAND$PLScmd_RUN"
+MATLAB_COMMAND2="$MATLAB_COMMAND;$PLS_RUN"
 
 matlab -nosplash -nodesktop -r $MATLAB_COMMAND
