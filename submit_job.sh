@@ -25,8 +25,10 @@ BEHAV_vars=($BEHAV_vars)
 BEHAV_vars_ls=''
 
 for var in ${BEHAV_vars[@]}; do
-	BEHAV_vars_ls="$BEHAV_vars_ls '$var' "
+	BEHAV_vars_ls="$BEHAV_vars_ls'$var',"
 done
+
+BEHAV_vars_ls=${BEHAV_vars_ls%","}
 
 PLS_OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
 PLS_OUTPUT_dir="OUTPUT_dir='$OUTPUT_dir'"
@@ -51,4 +53,4 @@ MATLAB_COMMAND="$MATLAB_COMMAND;$PLS_RUN"
 
 echo $MATLAB_COMMAND
 
-matlab -nosplash -nodesktop -r $MATLAB_COMMAND
+matlab.exe -nosplash -nodesktop -r $MATLAB_COMMAND
