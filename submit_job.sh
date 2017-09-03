@@ -24,7 +24,7 @@ cd $OUTPUT_dir
 BEHAV_vars=($BEHAV_vars)
 BEHAV_vars_ls=''
 
-for var in ${BEHAV_vars[@]};
+for var in ${BEHAV_vars[@]}; do
 	BEHAV_vars_ls="$BEHAV_vars_ls '$var' "
 done
 
