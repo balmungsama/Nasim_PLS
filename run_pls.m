@@ -13,6 +13,15 @@
 %        1 = (column wise) mean centring  of X and Y 
 %        2 = zscore X and Y
 
+% view input variables
+
+disp(OUTPUT_dir) ;
+disp(OPPNI_dir)  ;
+disp(BEHAV_dir)  ;
+disp(BEHAV_vars) ;
+disp(PIPE)       ;
+disp(VAR_NORM)   ;
+
 %% build file paths %%
 
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
