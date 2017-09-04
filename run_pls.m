@@ -27,7 +27,7 @@ disp(VAR_NORM)   ;
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
 
 GROUP = strsplit(BEHAV_dir, '/') ;
-GROUP = GROUP{end-1} ;
+GROUP = GROUP{end} ;
 
 behav_ls      = dir(BEHAV_dir) ;
 behav_ls      = {behav_ls(:).name} ;
