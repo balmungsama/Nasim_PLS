@@ -22,6 +22,10 @@ disp(BEHAV_vars) ;
 disp(PIPE)       ;
 disp(VAR_NORM)   ;
 
+%% output thresholds %%
+
+BSR_thr = 3 ;
+
 %% build file paths %%
 
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
@@ -86,6 +90,13 @@ for subj = behav_ls
 		spm = spm_ls{nifti_index} ;
 		spm = fullfile(OPPNI_dir, spm) ;
 		spm = load_nii(spm) ;
+
+		if run_count == 1
+			sample_spm                 = spm ;
+			sample_spm.img             = sample_spm.img(:,:,:,1) ;
+			sample_spm.hdr.dime.dim(5) = 1 ;
+		end
+
 		spm = spm.img ;
 		spm = spm(:,:,:, PIPE) ;														 
 		spm = reshape(spm, [1, prod(size(spm))]) ;
@@ -133,5 +144,22 @@ output_file = [GROUP, '_', BEHAV_vars{:}, '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
 
 save(output_file, 'results') ;
+
+
+%% extract & threshold BSRs %%
+
+BS_ratios.raw                         = results.avg_ZSalience_X ;
+BS_ratios.raw( isnan(BS_ratios.raw) ) = 0 ;
+
+BS_ratios.thr                                 = BS_ratios.raw ;
+BS_ratios.thr( abs(BS_ratios.thr) < BSR_thr ) = 0 ;
+
+%% save BSR image %%
+sample_spm.img = reshape(BS_ratios.raw, size(sample_spm.img)) ;
+save_nii(sample_spm, [GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii'])
+
+%% save thr BSR image %%
+sample_spm.img = reshape(BS_ratios.thr, size(sample_spm.img)) ;
+save_nii(sample_spm, [GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii'])
 
 exit
