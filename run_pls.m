@@ -15,6 +15,7 @@
 
 % view input variables
 
+disp(PREFIX)     ;
 disp(OUTPUT_dir) ;
 disp(OPPNI_dir)  ;
 disp(BEHAV_dir)  ;

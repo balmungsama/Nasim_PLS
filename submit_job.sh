@@ -53,6 +53,6 @@ PLS_RUN="run('$PLS_PATH/run_pls.m')"
 
 MATLAB_COMMAND="$MATLAB_COMMAND;$PLS_RUN"
 
-echo $MATLAB_COMMAND
+# echo $MATLAB_COMMAND
 
 matlab -nosplash -nodesktop -r $MATLAB_COMMAND
