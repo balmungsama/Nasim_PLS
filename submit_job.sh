@@ -5,12 +5,13 @@
 #$ -m be
 #$ -q abaqus.q
 
-OPPNI_dir=$1
-BEHAV_dir=$2
-OUTPUT_dir=$3
-BEHAV_vars=$4
-PIPE=$5
-VAR_NORM=$6
+PREFIX=$1
+OPPNI_dir=$2
+BEHAV_dir=$3
+OUTPUT_dir=$4
+BEHAV_vars=$5
+PIPE=$6
+VAR_NORM=$7
 
 PLS_PATH='/home/hpc3586/JE_packages/Nasim_PLS'
 date=$(date +%F) 
@@ -36,6 +37,7 @@ PLS_BEHAV_dir="BEHAV_dir='$BEHAV_dir'"
 PLS_BEHAV_vars="BEHAV_vars={$BEHAV_vars_ls}"
 PLS_PIPE="PIPE=$PIPE"
 PLS_VAR_NORM="VAR_NORM=$VAR_NORM"
+PLS_PREFIX="PREFIX=$PREFIX"
 
 # VARIABLE_LIST=($(compgen -v PLS_))
 
@@ -45,7 +47,7 @@ PLS_VAR_NORM="VAR_NORM=$VAR_NORM"
 # 	MATLAB_COMMAND="$MATLAB_COMMAND $var;"
 # done
 
-MATLAB_COMMAND="$PLS_OPPNI_dir;$PLS_OUTPUT_dir;$PLS_BEHAV_dir;$PLS_BEHAV_vars;$PLS_PIPE;$PLS_VAR_NORM"
+MATLAB_COMMAND="$PLS_PREFIX;$PLS_OPPNI_dir;$PLS_OUTPUT_dir;$PLS_BEHAV_dir;$PLS_BEHAV_vars;$PLS_PIPE;$PLS_VAR_NORM"
 
 PLS_RUN="run('$PLS_PATH/run_pls.m')"
 
