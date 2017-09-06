@@ -138,9 +138,11 @@ results.pred_scores_X   = pred_scores_X   ;
 results.pred_scores_Y   = pred_scores_Y   ;
 results.pls_out         = pls_out         ;
 
+%% saving PLS results to .mat file %%
+
 disp('Saving results...') ;
 
-output_file = [GROUP, '_', BEHAV_vars{:}, '.mat'] ;
+output_file = [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '.mat'] ;
 output_file = fullfile(OUTPUT_dir, output_file) ;
 
 save(output_file, 'results') ;
@@ -156,10 +158,10 @@ BS_ratios.thr( abs(BS_ratios.thr) < BSR_thr ) = 0 ;
 
 %% save BSR image %%
 sample_spm.img = reshape(BS_ratios.raw, size(sample_spm.img)) ;
-save_nii(sample_spm, [GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii'])
+save_nii(sample_spm, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii'])
 
 %% save thr BSR image %%
 sample_spm.img = reshape(BS_ratios.thr, size(sample_spm.img)) ;
-save_nii(sample_spm, [GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii'])
+save_nii(sample_spm, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii'])
 
 exit
