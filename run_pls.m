@@ -15,6 +15,7 @@
 
 % view input variables
 
+disp(PREFIX)     ;
 disp(OUTPUT_dir) ;
 disp(OPPNI_dir)  ;
 disp(BEHAV_dir)  ;
@@ -157,11 +158,13 @@ BS_ratios.thr                                 = BS_ratios.raw ;
 BS_ratios.thr( abs(BS_ratios.thr) < BSR_thr ) = 0 ;
 
 %% save BSR image %%
+bsr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii']) ;
 sample_spm.img = reshape(BS_ratios.raw, size(sample_spm.img)) ;
-save_nii(sample_spm, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii'])
+save_nii(sample_spm, bsr_path)
 
 %% save thr BSR image %%
+bsr_thr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii']) ;
 sample_spm.img = reshape(BS_ratios.thr, size(sample_spm.img)) ;
-save_nii(sample_spm, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii'])
+save_nii(sample_spm, bsr_thr_path)
 
 exit
