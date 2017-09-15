@@ -14,12 +14,12 @@ function [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] 
 %         X,Y        = 2D data matrices, being compared. Should be formatted as:
 %                          X = [N samples x Px variables] matrix of neuroimaging data
 %                          Y = [N samples x Py variables] matrix of behavioural data
-%                      
 %
-%        
+%
+%
 %         var_norm       = mean centering/normalization method applied to both X
 %                           and Y matrices  
-%   
+%
 %                        0= no normalization, directly use input values 
 %                        1= (column wise) mean centring  of X and Y 
 %                        2= zscore X and Y 

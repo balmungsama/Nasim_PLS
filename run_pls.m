@@ -22,6 +22,7 @@ disp(BEHAV_dir)  ;
 disp(BEHAV_vars) ;
 disp(PIPE)       ;
 disp(VAR_NORM)   ;
+disp(mask)       ;
 
 %% apply special mask %%
 
