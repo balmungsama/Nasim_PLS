@@ -29,7 +29,7 @@ disp(mask)       ;
 disp('Preparing mask...') ;
 
 if exist('mask')
-	mask.raw       = load_nii(mask) ;
+	mask.raw       = load_nii(mask.path) ;
 	mask.raw       = mask.raw.img ;
 	mask.dims      = size(mask.raw) ;
 	mask.img       = reshape(mask.raw, [1, prod(mask.dims)] ) ;

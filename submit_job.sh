@@ -39,7 +39,7 @@ PLS_BEHAV_vars="BEHAV_vars={$BEHAV_vars_ls}"
 PLS_PIPE="PIPE=$PIPE"
 PLS_VAR_NORM="VAR_NORM=$VAR_NORM"
 PLS_PREFIX="PREFIX='$PREFIX'"
-PLS_MASK="mask='$MASK'"
+PLS_MASK="mask.path='$MASK'"
 
 # VARIABLE_LIST=($(compgen -v PLS_))
 
