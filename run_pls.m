@@ -23,6 +23,19 @@ disp(BEHAV_vars) ;
 disp(PIPE)       ;
 disp(VAR_NORM)   ;
 
+%% apply special mask %%
+
+disp('Preparing mask...') ;
+
+if exist('mask')
+	mask.raw       = load_nii(mask) ;
+	mask.raw       = mask.raw.img ;
+	mask.dims      = size(mask.raw) ;
+	mask.img       = reshape(mask.raw, [1, prod(mask.dims)] ) ;
+	mask.st_coords = find(mask.img) ;
+	mask.zero      = zeros(size(mask.img)) ;
+end
+
 %% output thresholds %%
 
 BSR_thr = 3 ;
@@ -103,6 +116,10 @@ for subj = behav_ls
 		spm = reshape(spm, [1, prod(size(spm))]) ;
 		spm = double(spm) ;
 
+		if exist('mask')
+			spm = spm(mask.st_coords) ;
+		end
+		
 		XX(run_count,:) = spm ;
 
 		%% iterate through behavioural measures %%
@@ -132,6 +149,32 @@ end
 disp('Running Behavioural PLS analysis') ;
 
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
+
+%% translating dimensions back into template sapce %%
+if exist('mask')
+
+	tmp.avg_ZSalience_X                 = zeros(mask.dims) ;
+	tmp.avg_ZSalience_X(mask.st_coords) = avg_ZSalience_X  ;
+
+	for split = 1:size(results.pls_out,2)
+
+		tmp.ZSalience_X = zeros(mask.dims) ;
+		tmp.Salience_X  = zeros(mask.dims) ;
+
+		tmp.ZSalience_X(mask.st_coords) = pls_out(split).ZSalience_X ;
+		tmp.Salience_X(mask.st_coords)  = pls_out(split).Salience_X  ;
+
+		tmp.ZSalience_X( isnan(tmp.ZSalience_X) ) = 0 ;
+		tmp.Salience_X(  isnan(tmp.Salience_X ) ) = 0 ;
+
+		pls_out(split).ZSalience_X = tmp.ZSalience_X(mask.st_coords) ;
+		pls_out(split).Salience_X  = tmp.Salience_X(mask.st_coords)  ;
+
+	end
+
+end
+
+%% organizing results in structure %%
 
 results.avg_ZSalience_X = avg_ZSalience_X ;
 results.avg_ZSalience_Y = avg_ZSalience_Y ;
