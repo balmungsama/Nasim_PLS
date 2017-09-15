@@ -147,7 +147,7 @@ for subj = behav_ls
 
 end
 
-disp('Running Behavioural PLS analysis') ;
+disp('Running Behavioural PLS analysis...') ;
 
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
 
@@ -157,7 +157,7 @@ if exist('mask')
 	tmp.avg_ZSalience_X                 = zeros(mask.dims) ;
 	tmp.avg_ZSalience_X(mask.st_coords) = avg_ZSalience_X  ;
 
-	for split = 1:size(results.pls_out,2)
+	for split = 1:size(pls_out,2)
 
 		tmp.ZSalience_X = zeros(mask.dims) ;
 		tmp.Salience_X  = zeros(mask.dims) ;
