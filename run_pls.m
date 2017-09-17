@@ -152,24 +152,30 @@ disp('Running Behavioural PLS analysis...') ;
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
 
 %% translating dimensions back into template sapce %%
-if exist('mask')
+if exist('mask', 'var')
 
 	tmp.avg_ZSalience_X                 = zeros(mask.dims) ;
+	tmp.avg_ZSalience_X                 = reshape(tmp.avg_ZSalience_X, [1, numel(tmp.avg_ZSalience_X)]) ;
 	tmp.avg_ZSalience_X(mask.st_coords) = avg_ZSalience_X  ;
 
-	for split = 1:size(pls_out,2)
+	results.avg_ZSalience_X = reshape(tmp.avg_ZSalience_X, mask.dims ) ;
+
+	for split = 1:size(results.pls_out,2)
 
 		tmp.ZSalience_X = zeros(mask.dims) ;
 		tmp.Salience_X  = zeros(mask.dims) ;
 
-		tmp.ZSalience_X(mask.st_coords) = pls_out(split).ZSalience_X ;
-		tmp.Salience_X(mask.st_coords)  = pls_out(split).Salience_X  ;
+		tmp.ZSalience_X = reshape(tmp.ZSalience_X, [1, prod(mask.dims)] ) ;
+		tmp.Salience_X  = reshape(tmp.Salience_X , [1, prod(mask.dims)] ) ;
+
+		tmp.ZSalience_X(mask.st_coords) = results.pls_out(split).ZSalience_X ;
+		tmp.Salience_X(mask.st_coords)  = results.pls_out(split).Salience_X  ;
 
 		tmp.ZSalience_X( isnan(tmp.ZSalience_X) ) = 0 ;
 		tmp.Salience_X(  isnan(tmp.Salience_X ) ) = 0 ;
 
-		pls_out(split).ZSalience_X = tmp.ZSalience_X(mask.st_coords) ;
-		pls_out(split).Salience_X  = tmp.Salience_X(mask.st_coords)  ;
+		results.pls_out(split).ZSalience_X = reshape(tmp.ZSalience_X, mask.dims) ;
+		results.pls_out(split).Salience_X  = reshape(tmp.Salience_X , mask.dims) ;
 
 	end
 
@@ -203,12 +209,12 @@ BS_ratios.thr( abs(BS_ratios.thr) < BSR_thr ) = 0 ;
 
 %% save BSR image %%
 bsr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii']) ;
-sample_spm.img = reshape(BS_ratios.raw, size(sample_spm.img)) ;
-save_nii(sample_spm, bsr_path)
+sample_spm.img = BS_ratios.raw ;
+save_nii(sample_spm, bsr_path) ;
 
 %% save thr BSR image %%
 bsr_thr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii']) ;
-sample_spm.img = reshape(BS_ratios.thr, size(sample_spm.img)) ;
-save_nii(sample_spm, bsr_thr_path)
+sample_spm.img = BS_ratios.thr     ;
+save_nii(sample_spm, bsr_thr_path) ;
 
 exit
