@@ -1,30 +1,19 @@
+%% define pipeline %%
 
-% OUTPUT_dir = '/home/hpc3586/JE_packages/Nasim_PLS/results' ;
-% OPPNI_dir  = '/home/hpc3586/SART_data/output/GO/Younger/processing_GO_sart_young_erCVA_JE_erCVA' ;
-% BEHAV_dir  = '/home/hpc3586/SART_data/SART_behav/Younger' ;
-% BEHAV_vars = {'meanRT_GO'} ;
-% PIPE       = 2 ; % 1 = CON, 2 = FIX, 3 = IND
-% VAR_NORM   = 2 ;
+% pipe = 2 ; % 1 = CON, 2 = FIX, 3 = IND
 
-% var_norm = mean centering/normalization method applied to both X
-%            and Y matrices  
-%
-%        0 = no normalization, directly use input values 
-%        1 = (column wise) mean centring  of X and Y 
-%        2 = zscore X and Y
+%% define BSR thrshold %%
 
-% view input variables
+if ~exist('bsr_thr')
+	bsr_thr = 3 ;
+end
 
-disp(PREFIX)     ;
-disp(OUTPUT_dir) ;
-disp(OPPNI_dir)  ;
-disp(BEHAV_dir)  ;
-disp(BEHAV_vars) ;
-disp(PIPE)       ;
-disp(VAR_NORM)   ;
-disp(mask)       ;
+%% import behavioural data %%
 
-%% apply special mask %%
+behav_data = readtable(behav_path, 'ReadVariableNames',false) ;
+behav_data = table2array(behav_data)                          ;
+
+%% apply spatial mask %%
 
 disp('Preparing mask...') ;
 
@@ -37,184 +26,126 @@ if exist('mask')
 	mask.zero      = zeros(size(mask.img)) ;
 end
 
-%% output thresholds %%
-
-BSR_thr = 3 ;
-
-%% build file paths %%
+%% get spm data %%
 
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
 
-GROUP = strsplit(BEHAV_dir, '/') ;
-GROUP = GROUP{end} ;
+spm_ls       = dir(OPPNI_dir) ;
+spm_ls       = {spm_ls(:).name} ;
+spm_ls(1:2)  = [] ;
+spm_ls_index = strfind(spm_ls, 'sNorm') ;
+spm_ls_index = find(~cellfun(@isempty, spm_ls_index)) ;
+spm_ls       = { spm_ls{ spm_ls_index } } ;
 
-behav_ls      = dir(BEHAV_dir) ;
-behav_ls      = {behav_ls(:).name} ;
-behav_ls(1:2) = [] ;
+%% filter data %% (e.g., only data that includes a group prefix)
 
-spm_ls      = dir(OPPNI_dir) ;
-spm_ls      = {spm_ls(:).name} ;
-spm_ls(1:2) = [] ;
+if exist('filter')
+	spm_ls_index = strfind(spm_ls, filter) ;
+	spm_ls_index = find(~cellfun(@isempty, spm_ls_index)) ;
+	spm_ls       = { spm_ls{ spm_ls_index } } ;
+end
 
-%% ex-Gaussian measures %%
+%% sort runs %%
 
-exG_measures = {'mu', 'sigma', 'tau'} ;
+runs.exist = strfind(spm_ls, 'run') ;
 
-%% prep for X & Y matrices %%
+if sum( [runs.exist{:}] ) > 0
 
-XX      = [] ;
-YY      = [] ;
-SUBJ_ls = {} ;
+	count = 0 ;
+	runs.index = zeros(1, size(runs.exist,2) ) ;
+	for file = spm_ls
+		count = count + 1 ;
 
-disp('Compiling data...') ;
+		tmp_runs = file{:}(runs.exist{count} + 3) ;
+		tmp_runs = str2num(tmp_runs) ; 
+		runs.index(count) = tmp_runs ;
+	end
 
-run_count = 0 ;
-for subj = behav_ls
+	runs.unique = unique(runs.index) ;
 
-	subj_behav = subj{:} ;
-	subj_behav = fullfile(BEHAV_dir, subj_behav) ;
-	
-	[pathstr,subj_id,ext] = fileparts(subj_behav) ; clear pathstr ext
-	
-	load(subj_behav) ;
+	%% sort data by runs %%
 
-	%% iterate through runs %%
+	%TODO add in sorting of behavioural data
 
-	RUNS = [SART_behav.Runs]' ;
-	RUNS = double(RUNS) ;
-	for RUN = RUNS
+	spm_ls_sort{1} = 'null' ;
+	for run = runs.unique
+		tmp_spm_ls_sort       = strfind(spm_ls, ['run' num2str(run)])     ;
+		tmp_spm_ls_sort_index = find(~cellfun(@isempty, tmp_spm_ls_sort)) ;
+		tmp_spm_ls_sort       = { spm_ls{ tmp_spm_ls_sort_index } }       ;
 
-		run_count = run_count + 1 ;
+		spm_ls_sort = {spm_ls_sort{:} tmp_spm_ls_sort{:}}                 ;
+	end
 
-		%% find the matching NIFTI file %%		
-
-		nifti_find  = regexp(spm_ls, ['\w*' subj_id '\w*run' num2str(RUN) '\w*sNorm.nii' ]) ;
-		nifti_count = 0 ;
-
-		for nifti = nifti_find ;
-			nifti_count = nifti_count + 1 ;
-			nifti = nifti{:} ;
-
-			if nifti == 1
-				nifti_index = nifti_count ;
-				break
-			end
-
-		end
-
-		spm = spm_ls{nifti_index} ;
-		spm = fullfile(OPPNI_dir, spm) ;
-		spm = load_nii(spm) ;
-
-		if run_count == 1
-			sample_spm                 = spm ;
-			sample_spm.img             = sample_spm.img(:,:,:,1) ;
-			sample_spm.hdr.dime.dim(5) = 1 ;
-		end
-
-		spm = spm.img ;
-		spm = spm(:,:,:, PIPE) ;														 
-		spm = reshape(spm, [1, prod(size(spm))]) ;
-		spm = double(spm) ;
-
-		if exist('mask')
-			spm = spm(mask.st_coords) ;
-		end
-		
-		XX(run_count,:) = spm ;
-
-		%% iterate through behavioural measures %%
-
-		behav_count = 0 ;
-		for behav = BEHAV_vars
-
-			behav = behav{:} ;
-
-			behav_count = behav_count + 1 ;
-
-			if any(strcmp(exG_measures, behav)) 
-				YY(run_count, behav_count) = SART_behav.exGauss.(behav)(RUN) ;
-			else
-				YY(run_count, behav_count) = SART_behav.(behav)(RUN) ;
-			end
-
-		end
-
-	SUBJ_ls{run_count,1} = subj_id ;
-	SUBJ_ls{run_count,2} = RUN ;
-
-	end	
+	spm_ls_sort = {spm_ls_sort{2:end}} ;
+	spm_ls      = spm_ls_sort ;
 
 end
 
-disp('Running Behavioural PLS analysis...') ;
+%% remove outliers %%
 
-[avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX, YY, VAR_NORM) ;
+if exist('outlier_ls')
 
-%% translating dimensions back into template sapce %%
-if exist('mask', 'var')
+	outlier_ls = strsplit(outlier_ls, ';') ;
 
-	tmp.avg_ZSalience_X                 = zeros(mask.dims) ;
-	tmp.avg_ZSalience_X                 = reshape(tmp.avg_ZSalience_X, [1, numel(tmp.avg_ZSalience_X)]) ;
-	tmp.avg_ZSalience_X(mask.st_coords) = avg_ZSalience_X  ;
+	outlier_index = 0 ;
+	for outlier = outlier_ls
+		outlier = outlier{:} ;
+		% outlier = str2num(outlier) ;
 
-	results.avg_ZSalience_X = reshape(tmp.avg_ZSalience_X, mask.dims ) ;
+		tmp_outlier_index = strfind(spm_ls, outlier) ;
+		tmp_outlier_index = find(~cellfun(@isempty, tmp_outlier_index)) ;
+		outlier_index     = [ outlier_index tmp_outlier_index ]   ;
+	end
+	outlier_index = outlier_index(2:end) ;
 
-	for split = 1:size(results.pls_out,2)
+	spm_ls_outfree               = spm_ls(~ismember(spm_ls, spm_ls(outlier_index))) ;
+	
+	spm_ls                       = spm_ls_outfree ;
+	behav_data(outlier_index, :) = [] ;
 
-		tmp.ZSalience_X = zeros(mask.dims) ;
-		tmp.Salience_X  = zeros(mask.dims) ;
+end
 
-		tmp.ZSalience_X = reshape(tmp.ZSalience_X, [1, prod(mask.dims)] ) ;
-		tmp.Salience_X  = reshape(tmp.Salience_X , [1, prod(mask.dims)] ) ;
+%% import imaging data %%
 
-		tmp.ZSalience_X(mask.st_coords) = results.pls_out(split).ZSalience_X ;
-		tmp.Salience_X(mask.st_coords)  = results.pls_out(split).Salience_X  ;
+for spm = spm_ls
+	spm = spm{:} ;
+	spm = fullfile(OPPNI_dir, spm) ;
+	spm = load_nii(spm) ;
+	spm = spm.img ;
+	spm = spm(:,:,:,pipe) ;
+	spm = reshape(spm, [1, prod(size(spm))]) ;
 
-		tmp.ZSalience_X( isnan(tmp.ZSalience_X) ) = 0 ;
-		tmp.Salience_X(  isnan(tmp.Salience_X ) ) = 0 ;
-
-		results.pls_out(split).ZSalience_X = reshape(tmp.ZSalience_X, mask.dims) ;
-		results.pls_out(split).Salience_X  = reshape(tmp.Salience_X , mask.dims) ;
-
+	if ~exist('XX')
+		XX = spm ;
+	else
+		XX = [XX;spm] ;
 	end
 
 end
 
-%% organizing results in structure %%
+%% define behavioural matrix %%
 
-results.avg_ZSalience_X = avg_ZSalience_X ;
-results.avg_ZSalience_Y = avg_ZSalience_Y ;
-results.pred_scores_X   = pred_scores_X   ;
-results.pred_scores_Y   = pred_scores_Y   ;
-results.pls_out         = pls_out         ;
+YY = behav_data ;
 
-%% saving PLS results to .mat file %%
+%% run PLS analysis %%
 
-disp('Saving results...') ;
+[avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX,YY,var_norm) ;
 
-output_file = [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '.mat'] ;
-output_file = fullfile(OUTPUT_dir, output_file) ;
+%% compile results in a single variable %%
 
-save(output_file, 'results') ;
+pls_results.avg_ZSalience_X = avg_ZSalience_X ;
+pls_results.avg_ZSalience_Y = avg_ZSalience_Y ;
+pls_results.pred_scores_X   = pred_scores_X   ;
+pls_results.pred_scores_Y   = pred_scores_Y   ;
 
+pls_results.pls_out         = pls_out         ;
+pls_results.subj_ls         = spm_ls          ;
+pls_results.behav_data      = YY              ;
 
-%% extract & threshold BSRs %%
+%% build output file path %%
 
-BS_ratios.raw                         = results.avg_ZSalience_X ;
-BS_ratios.raw( isnan(BS_ratios.raw) ) = 0 ;
+output_path = fullfile(output_path, output_name) ;
 
-BS_ratios.thr                                 = BS_ratios.raw ;
-BS_ratios.thr( abs(BS_ratios.thr) < BSR_thr ) = 0 ;
+%% save results to file %%
 
-%% save BSR image %%
-bsr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR', '.nii']) ;
-sample_spm.img = BS_ratios.raw ;
-save_nii(sample_spm, bsr_path) ;
-
-%% save thr BSR image %%
-bsr_thr_path = fullfile(OUTPUT_dir, [PREFIX '_' GROUP, '_', BEHAV_vars{:}, '__BSR_thr', '.nii']) ;
-sample_spm.img = BS_ratios.thr     ;
-save_nii(sample_spm, bsr_thr_path) ;
-
-exit
+save(output_filename, pls_results) ;
