@@ -1,3 +1,7 @@
+%% TODO list %%
+
+% 1. add in sorting of behavioural data
+
 %% define pipeline %%
 
 % pipe = 2 ; % 1 = CON, 2 = FIX, 3 = IND
@@ -64,8 +68,6 @@ if sum( [runs.exist{:}] ) > 0
 	runs.unique = unique(runs.index) ;
 
 	%% sort data by runs %%
-
-	%TODO add in sorting of behavioural data
 
 	spm_ls_sort{1} = 'null' ;
 	for run = runs.unique
