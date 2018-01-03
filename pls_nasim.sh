@@ -31,7 +31,7 @@ nasim_pls_path='/global/home/hpc3586/JE_packages/Nasim_PLS'
 ## default values ##
 
 pipe=2
-bsr=3
+bsr_thr=3
 
 ## grab user-specified variables ##
 
