@@ -14,7 +14,15 @@
 
 %% added disp checks %%
 
-disp(behav_path) ;
+disp(pipe)        ;
+disp(bsr_thr)     ;
+disp(OPPNI_dir)   ;
+disp(behav_path)  ;
+disp(mask)        ;
+disp(filt)        ;
+disp(outlier_ls)  ;
+disp(output_path) ;
+disp(output_name) ;
 
 %% import behavioural data %%
 
@@ -47,8 +55,8 @@ spm_ls       = { spm_ls{ spm_ls_index } } ;
 
 %% filter data %% (e.g., only data that includes a group prefix)
 
-if exist('filter')
-	spm_ls_index = strfind(spm_ls, filter) ;
+if exist('filt')
+	spm_ls_index = strfind(spm_ls, filt) ;
 	spm_ls_index = find(~cellfun(@isempty, spm_ls_index)) ;
 	spm_ls       = { spm_ls{ spm_ls_index } } ;
 end

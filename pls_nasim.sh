@@ -35,14 +35,14 @@ bsr_thr=3
 
 ## grab user-specified variables ##
 
-while getopts p:i:b:m:f:r:o:n:h: option; do
+while getopts p:l:i:b:m:f:r:o:n:h: option; do
 	case "${option}" in
 		p) pipe=${OPTARG};;
-		t) bsr_thr=${OPTARG};;
+		l) bsr_thr=${OPTARG};;
 		i) OPPNI_dir=${OPTARG};;
 		b) behav_path=${OPTARG};;
 		m) mask=${OPTARG};;
-		f) filter=${OPTARG};;
+		f) filt=${OPTARG};;
 		r) outlier_ls=${OPTARG};;  # seperate outlier names using semicolons, ;
 		o) output_path=${OPTARG};;
 		n) output_name=${OPTARG};;
@@ -57,7 +57,7 @@ bsr_thr="bsr_thr=$bsr_thr"
 OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
 behav_path="behav_path='$behav_path'"
 mask="mask='$mask'"
-filter="filter='$filter'"
+filt="filt='$filt'"
 outlier_ls="outlier_ls='$outlier_ls'"
 output_path="output_path='$output_path'"
 output_name="output_name='$output_name'"
@@ -66,7 +66,7 @@ run_script="run('$nasim_pls_path/run_pls.m')"
 
 ## compile variables ##
 
-MATLAB_CMD="$pipe;$bsr_thr;$OPPNI_dir;$behav_path;$mask;$filter;$outlier_ls;$output_path;$output_name;$run_script"
+MATLAB_CMD="$pipe;$bsr_thr;$OPPNI_dir;$behav_path;$mask;$filt;$outlier_ls;$output_path;$output_name;$run_script"
 
 matlab -nodesktop -nosplash -r $MATLAB_CMD
 
