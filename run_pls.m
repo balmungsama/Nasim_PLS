@@ -12,6 +12,10 @@
 % 	bsr_thr = 3 ;
 % end
 
+%% added disp checks %%
+
+disp(behav_path) ;
+
 %% import behavioural data %%
 
 behav_data = readtable(behav_path, 'ReadVariableNames',false) ;
