@@ -14,7 +14,7 @@
 
 %% added disp checks %%
 
-disp('Disp variables...')
+disp('Disp variables...') ;
 
 disp(pipe)        ;
 disp(bsr_thr)     ;
@@ -26,8 +26,8 @@ disp(output_path) ;
 disp(output_name) ;
 disp(var_norm)    ;
 
-disp(' ... ')
-disp('     ')
+disp(' ... ') ;
+disp('     ') ;
 
 %% import behavioural data %%
 
