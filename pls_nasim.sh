@@ -27,15 +27,22 @@ nasim_pls_path='/global/home/hpc3586/JE_packages/Nasim_PLS'
 # -o output_path : a directory to output the pls results file
 # -n output_name : the filename prefix of the .mat output
 #  								 prefix_behavPLS.mat
+# -v var_norm    : mean centering/normalization method applied to both X
+# 								 and Y matrices  
+# 								 
+# 								 0= no normalization, directly use input values 
+# 								 1= (column wise) mean centring  of X and Y 
+# 								 2= zscore X and Y 
 
 ## default values ##
 
-pipe=2
-bsr_thr=3
+pipe="pipe=2"
+bsr_thr="bsr_thr=3"
+var_norm="var_norm=2"
 
 ## grab user-specified variables ##
 
-while getopts p:l:i:b:m:f:r:o:n:h: option; do
+while getopts p:l:i:b:m:f:r:o:n:v:h: option; do
 	case "${option}" in
 		p) pipe=${OPTARG}
 			 pipe="pipe=$pipe";;
@@ -71,13 +78,16 @@ while getopts p:l:i:b:m:f:r:o:n:h: option; do
 			 output_name="output_name='$output_name'"
 			 MATLAB_CMD=$(echo "$MATLAB_CMD;$output_name");;
 
+		v) var_norm=${OPTARG}
+			 var_norm="var_norm=$var_norm"
+
 		h) echo_help=${OPTARG};;
 	esac
 done
 
 ## add in the pipeline and bsr_thr values ##
 
-MATLAB_CMD=$(echo "$MATLAB_CMD;$pipe;$bsr_thr")
+MATLAB_CMD=$(echo "$MATLAB_CMD;$pipe;$bsr_thr;$var_norm")
 
 ## add script to MATLAB_CMD ##
 
