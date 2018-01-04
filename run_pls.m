@@ -22,6 +22,7 @@ disp(filt)        ;
 disp(outlier_ls)  ;
 disp(output_path) ;
 disp(output_name) ;
+disp(var_norm)    ;
 
 %% import behavioural data %%
 
