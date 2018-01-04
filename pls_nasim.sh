@@ -79,7 +79,7 @@ while getopts p:l:i:b:m:f:r:o:n:v:h: option; do
 			 MATLAB_CMD=$(echo "$MATLAB_CMD;$output_name");;
 
 		v) var_norm=${OPTARG}
-			 var_norm="var_norm=$var_norm"
+			 var_norm="var_norm=$var_norm";; 
 
 		h) echo_help=${OPTARG};;
 	esac
