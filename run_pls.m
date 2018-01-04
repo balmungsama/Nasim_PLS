@@ -18,7 +18,6 @@ disp(pipe)        ;
 disp(bsr_thr)     ;
 disp(OPPNI_dir)   ;
 disp(behav_path)  ;
-disp(mask)        ;
 disp(filt)        ;
 disp(outlier_ls)  ;
 disp(output_path) ;
