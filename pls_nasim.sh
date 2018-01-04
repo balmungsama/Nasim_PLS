@@ -61,7 +61,7 @@ while getopts p:l:i:b:m:f:r:o:n:h: option; do
 
 		r) outlier_ls=${OPTARG}  # seperate outlier names using semicolons, ;
 			 outlier_ls="outlier_ls='$outlier_ls'"
-			 MATLAB_CMD=$(echo "$MATLAB_CMD;$outier_ls");;
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$outlier_ls");;
 
 		o) output_path=${OPTARG}
 			 output_path="output_path='$output_path'"
