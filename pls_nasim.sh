@@ -38,37 +38,57 @@ bsr_thr=3
 while getopts p:l:i:b:m:f:r:o:n:h: option; do
 	case "${option}" in
 		p) pipe=${OPTARG};;
+			 pipe="pipe=$pipe"
+
 		l) bsr_thr=${OPTARG};;
+			 bsr_thr="bsr_thr=$bsr_thr"
+
 		i) OPPNI_dir=${OPTARG};;
+			 OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$OPPNI_dir")
+
 		b) behav_path=${OPTARG};;
+			 behav_path="behav_path='$behav_path'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$behav_path")
+
 		m) mask=${OPTARG};;
+			 mask="mask='$mask'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$mask")
+
 		f) filt=${OPTARG};;
+			 filt="filt='$filt'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$filt")
+
 		r) outlier_ls=${OPTARG};;  # seperate outlier names using semicolons, ;
+			 outlier_ls="outlier_ls='$outlier_ls'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$outier_ls")
+
 		o) output_path=${OPTARG};;
+			 output_path="output_path='$output_path'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$output_path")
+
 		n) output_name=${OPTARG};;
+			 output_name="output_name='$output_name'"
+			 MATLAB_CMD=$(echo "$MATLAB_CMD;$output_name")
+
 		h) echo_help=${OPTARG};;
 	esac
 done
 
-## prep variables ##
+## add in the pipeline and bsr_thr values ##
 
-pipe="pipe=$pipe"
-bsr_thr="bsr_thr=$bsr_thr"
-OPPNI_dir="OPPNI_dir='$OPPNI_dir'"
-behav_path="behav_path='$behav_path'"
-mask="mask='$mask'"
-filt="filt='$filt'"
-outlier_ls="outlier_ls='$outlier_ls'"
-output_path="output_path='$output_path'"
-output_name="output_name='$output_name'"
+MATLAB_CMD=$(echo "$MATLAB_CMD;$pipe;$bsr_thr")
+
+## add script to MATLAB_CMD ##
 
 run_script="run('$nasim_pls_path/run_pls.m')"
+MATLAB_CMD=$(echo "$MATLAB_CMD;$run_script")
 
-## compile variables ##
-
-MATLAB_CMD="$pipe;$bsr_thr;$OPPNI_dir;$behav_path;$mask;$filt;$outlier_ls;$output_path;$output_name;$run_script"
+## run the script ##
 
 matlab -nodesktop -nosplash -r $MATLAB_CMD
+
+## tell me you're done ##
 
 echo '    '
 echo 'done'

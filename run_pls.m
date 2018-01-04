@@ -31,9 +31,9 @@ behav_data = table2array(behav_data)                          ;
 
 %% apply spatial mask %%
 
-disp('Preparing mask...') ;
-
 if exist('mask')
+	disp('Preparing mask...') ;
+
 	mask.raw       = load_nii(mask.path) ;
 	mask.raw       = mask.raw.img ;
 	mask.dims      = size(mask.raw) ;
