@@ -14,6 +14,8 @@
 
 %% added disp checks %%
 
+disp('Disp variables...')
+
 disp(pipe)        ;
 disp(bsr_thr)     ;
 disp(OPPNI_dir)   ;
@@ -24,7 +26,12 @@ disp(output_path) ;
 disp(output_name) ;
 disp(var_norm)    ;
 
+disp(' ... ')
+disp('     ')
+
 %% import behavioural data %%
+
+disp('Reading behavioural data...') ;
 
 behav_data = readtable(behav_path, 'ReadVariableNames',false) ;
 behav_data = table2array(behav_data)                          ;
@@ -32,7 +39,7 @@ behav_data = table2array(behav_data)                          ;
 %% apply spatial mask %%
 
 if exist('mask')
-	disp('Preparing mask...') ;
+	disp('Preparing spatial mask...') ;
 
 	mask.raw       = load_nii(mask.path) ;
 	mask.raw       = mask.raw.img ;
@@ -45,6 +52,8 @@ end
 %% get spm data %%
 
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
+
+disp(['Importing behav data from ', OPPNI_dir]) ;
 
 spm_ls       = dir(OPPNI_dir) ;
 spm_ls       = {spm_ls(:).name} ;
@@ -99,6 +108,8 @@ end
 
 if exist('outlier_ls')
 
+	disp('Removing outliers...') ;
+
 	outlier_ls = strsplit(outlier_ls, ';') ;
 
 	outlier_index = 0 ;
@@ -120,6 +131,8 @@ if exist('outlier_ls')
 end
 
 %% import imaging data %%
+
+disp('Importing subject SPMs...') ;
 
 for spm = spm_ls
 	spm = spm{:} ;
@@ -147,6 +160,8 @@ YY = behav_data ;
 
 %% run PLS analysis %%
 
+disp('Running bPLS analysis...') ;
+
 [avg_ZSalience_X,avg_ZSalience_Y,pred_scores_X, pred_scores_Y,pls_out] = pls_nasim(XX,YY,var_norm) ;
 
 %% compile results in a single variable %%
@@ -165,5 +180,7 @@ pls_results.behav_data      = YY              ;
 output_path = fullfile(output_path, output_name) ;
 
 %% save results to file %%
+
+disp('Saving results...') ;
 
 save(output_filename, pls_results) ;
