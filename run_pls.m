@@ -8,9 +8,9 @@
 
 %% define BSR thrshold %%
 
-if ~exist('bsr_thr')
-	bsr_thr = 3 ;
-end
+% if ~exist('bsr_thr')
+% 	bsr_thr = 3 ;
+% end
 
 %% import behavioural data %%
 
@@ -124,6 +124,10 @@ for spm = spm_ls
 	end
 
 end
+
+%% threshold the XX matrix by the bsr_thr %%
+
+XX(XX < bsr_thr) = 0 ;
 
 %% define behavioural matrix %%
 
