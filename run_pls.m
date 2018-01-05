@@ -177,10 +177,10 @@ pls_results.behav_data      = YY              ;
 
 %% build output file path %%
 
-output_path = fullfile(output_path, output_name) ;
+output_path = fullfile(output_path, [output_name '_bPLS.mat']) ;
 
 %% save results to file %%
 
 disp('Saving results...') ;
 
-save(output_filename, pls_results) ;
+save(output_path, pls_results) ;
