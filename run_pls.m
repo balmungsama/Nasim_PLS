@@ -152,7 +152,7 @@ end
 
 %% threshold the XX matrix by the bsr_thr %%
 
-XX(XX < bsr_thr) = 0 ;
+% XX(XX < bsr_thr) = 0 ; 
 
 %% define behavioural matrix %%
 
