@@ -53,7 +53,7 @@ end
 
 OPPNI_dir = fullfile(OPPNI_dir, 'optimization_results', 'spms') ;
 
-disp(['Importing behav data from ', OPPNI_dir]) ;
+disp(['Importing spm data from ', OPPNI_dir]) ;
 
 spm_ls       = dir(OPPNI_dir) ;
 spm_ls       = {spm_ls(:).name} ;
@@ -183,4 +183,4 @@ output_path = fullfile(output_path, [output_name '_bPLS.mat']) ;
 
 disp('Saving results...') ;
 
-save(output_path, pls_results) ;
+save(output_path, 'pls_results') ;
