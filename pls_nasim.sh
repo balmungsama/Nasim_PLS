@@ -59,7 +59,7 @@ while getopts p:l:i:b:m:f:r:o:n:v:h: option; do
 			 MATLAB_CMD=$(echo "$MATLAB_CMD;$behav_path");;
 
 		m) mask=${OPTARG}
-			 mask="mask='$mask'"
+			 mask="mask.path='$mask'"
 			 MATLAB_CMD=$(echo "$MATLAB_CMD;$mask");;
 
 		f) filt=${OPTARG}
