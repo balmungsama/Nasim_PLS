@@ -138,9 +138,16 @@ for spm = spm_ls
 	spm = spm{:} ;
 	spm = fullfile(OPPNI_dir, spm) ;
 	spm = load_nii(spm) ;
-	spm = spm.img ;
+	spm = spm.img ;	
 	spm = spm(:,:,:,pipe) ;
+
+	spm_size = size(spm) ;
+
 	spm = reshape(spm, [1, prod(size(spm))]) ;
+
+	if exist('mask') 
+		spm = spm(mask.st_coords) ;
+	end
 
 	if ~exist('XX')
 		XX = spm ;
@@ -174,6 +181,11 @@ pls_results.pred_scores_Y   = pred_scores_Y   ;
 pls_results.pls_out         = pls_out         ;
 pls_results.subj_ls         = spm_ls          ;
 pls_results.behav_data      = YY              ;
+pls_results.dim             = spm_size        ;
+
+if exist('mask')
+	pls_results.st_coords = mask.st_coords ;
+end
 
 %% build output file path %%
 
