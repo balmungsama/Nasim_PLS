@@ -30,9 +30,9 @@ nasim_pls_path='/global/home/hpc3586/JE_packages/Nasim_PLS'
 # -v var_norm    : mean centering/normalization method applied to both X
 # 								 and Y matrices  
 # 								 
-# 								 0= no normalization, directly use input values 
-# 								 1= (column wise) mean centring  of X and Y 
-# 								 2= zscore X and Y 
+# 								 0 = no normalization, directly use input values 
+# 								 1 = (column wise) mean centring  of X and Y 
+# 								 2 = zscore X and Y (default)
 
 ## default values ##
 

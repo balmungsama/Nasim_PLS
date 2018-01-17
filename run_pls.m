@@ -16,15 +16,15 @@
 
 disp('Disp variables...') ;
 
-disp(pipe)        ;
-disp(bsr_thr)     ;
-disp(OPPNI_dir)   ;
-disp(behav_path)  ;
-disp(filt)        ;
-disp(outlier_ls)  ;
-disp(output_path) ;
-disp(output_name) ;
-disp(var_norm)    ;
+% disp(pipe)        ;
+% disp(bsr_thr)     ;
+% disp(OPPNI_dir)   ;
+% disp(behav_path)  ;
+% disp(filt)        ;
+% disp(outlier_ls)  ;
+% disp(output_path) ;
+% disp(output_name) ;
+% disp(var_norm)    ;
 
 disp(' ... ') ;
 disp('     ') ;
