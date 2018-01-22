@@ -66,6 +66,8 @@ Yfull = Y;
 
 
 for ii = 1 : nsub
+    disp(['subject ' num2str(ii)]);
+
     x = Xfull;
     y = Yfull;
     xo = Xfull(ii,:);
@@ -121,6 +123,8 @@ end
 
 pls_sort = pls_res;
 for ii = 1: nsub 
+    disp(['nsub ' num2str(ii)]);
+
     [ind(ii,:),sg(ii,:)] = sort_eigen_images(pls_full.Salience_X,pls_res(ii).Salience_X);
     pls_sort(ii).ZSalience_X = bsxfun(@times,pls_res(ii).ZSalience_X(:,ind(ii,:)),sg(ii,:));
     pls_sort(ii).Salience_Y = bsxfun(@times,pls_res(ii).Salience_Y(:,ind(ii,:)),sg(ii,:));
@@ -147,6 +151,8 @@ pred_scores_Y = reshape([pls_sort.latent_Yo],[ncomp,nsub]);
 pred_corvals = diag(corr(pred_scores_X',pred_scores_Y'));
 
 function [Salience_M,Salience_f,latent_M,latent_f,ZSalience_M,ZSalience_f,Sig_prob,Dcorr_pct,VSalience_M,VSalience_f] = PLS_between_MEG_fMRI(MEG_Map,BOLD_Map,num_regions,pvalue)
+
+disp('function running...')
 
 [Um,Dm,Vm] = svd(MEG_Map,'econ');
 [Uf,Df,Vf] = svd(BOLD_Map,'econ');
