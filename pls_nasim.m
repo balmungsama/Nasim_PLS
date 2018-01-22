@@ -188,6 +188,8 @@ vMSalience_f = 0;
 for bs = 1:100
     %bs
     
+    disp(['bs ' num2str(bs)]);
+
     isub = ceil(size(MEG_Map,1)*rand(1,size(MEG_Map,1)));
     
     [bUm,bDm,bVm] = svd(MEG_Map(isub,:),'econ');
