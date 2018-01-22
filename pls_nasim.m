@@ -122,18 +122,17 @@ end
 [pls_full.Salience_X,pls_full.Salience_Y,pls_full.latent_X,pls_full.latent_Y,pls_full.ZSalience_X,pls_full.ZSalience_Y,pls_full.Sig_prob,pls_full.Dcorr_pct] = PLS_between_MEG_fMRI(X,Y,1,1);
 
 pls_sort = pls_res;
-for ii = 1: nsub 
-    disp(['nsub ' num2str(ii)]);
+for ii = 1:nsub 
 
-    [ind(ii,:),sg(ii,:)] = sort_eigen_images(pls_full.Salience_X,pls_res(ii).Salience_X);
-    pls_sort(ii).ZSalience_X = bsxfun(@times,pls_res(ii).ZSalience_X(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).Salience_Y = bsxfun(@times,pls_res(ii).Salience_Y(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).Salience_X = bsxfun(@times,pls_res(ii).Salience_X(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).ZSalience_Y = bsxfun(@times,pls_res(ii).ZSalience_Y(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).latent_Y =  bsxfun(@times,pls_res(ii).latent_Y(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).latent_X =  bsxfun(@times,pls_res(ii).latent_X(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).latent_Yo =  bsxfun(@times,pls_res(ii).latent_Yo(:,ind(ii,:)),sg(ii,:));
-    pls_sort(ii).latent_Xo =  bsxfun(@times,pls_res(ii).latent_Xo(:,ind(ii,:)),sg(ii,:));
+    [ind(ii,: ),sg(ii,: )]   = sort_eigen_images(pls_full.Salience_X    ,pls_res(ii).Salience_X) ;
+    pls_sort(ii).ZSalience_X = bsxfun(@times,pls_res(ii).ZSalience_X( : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).Salience_Y  = bsxfun(@times,pls_res(ii).Salience_Y(  : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).Salience_X  = bsxfun(@times,pls_res(ii).Salience_X(  : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).ZSalience_Y = bsxfun(@times,pls_res(ii).ZSalience_Y( : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).latent_Y    = bsxfun(@times,pls_res(ii).latent_Y(    : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).latent_X    = bsxfun(@times,pls_res(ii).latent_X(    : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).latent_Yo   = bsxfun(@times,pls_res(ii).latent_Yo(   : ,ind(ii,: )), sg(ii,: )) ;
+    pls_sort(ii).latent_Xo   = bsxfun(@times,pls_res(ii).latent_Xo(   : ,ind(ii,: )), sg(ii,: )) ;
    
 end
 
