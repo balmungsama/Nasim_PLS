@@ -66,8 +66,6 @@ Yfull = Y;
 
 
 for ii = 1 : nsub
-    disp(['subject ' num2str(ii)]);
-
     x = Xfull;
     y = Yfull;
     xo = Xfull(ii,:);
@@ -122,17 +120,16 @@ end
 [pls_full.Salience_X,pls_full.Salience_Y,pls_full.latent_X,pls_full.latent_Y,pls_full.ZSalience_X,pls_full.ZSalience_Y,pls_full.Sig_prob,pls_full.Dcorr_pct] = PLS_between_MEG_fMRI(X,Y,1,1);
 
 pls_sort = pls_res;
-for ii = 1:nsub 
-
-    [ind(ii,: ),sg(ii,: )]   = sort_eigen_images(pls_full.Salience_X    ,pls_res(ii).Salience_X) ;
-    pls_sort(ii).ZSalience_X = bsxfun(@times,pls_res(ii).ZSalience_X( : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).Salience_Y  = bsxfun(@times,pls_res(ii).Salience_Y(  : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).Salience_X  = bsxfun(@times,pls_res(ii).Salience_X(  : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).ZSalience_Y = bsxfun(@times,pls_res(ii).ZSalience_Y( : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).latent_Y    = bsxfun(@times,pls_res(ii).latent_Y(    : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).latent_X    = bsxfun(@times,pls_res(ii).latent_X(    : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).latent_Yo   = bsxfun(@times,pls_res(ii).latent_Yo(   : ,ind(ii,: )), sg(ii,: )) ;
-    pls_sort(ii).latent_Xo   = bsxfun(@times,pls_res(ii).latent_Xo(   : ,ind(ii,: )), sg(ii,: )) ;
+for ii = 1: nsub 
+    [ind(ii,:),sg(ii,:)] = sort_eigen_images(pls_full.Salience_X,pls_res(ii).Salience_X);
+    pls_sort(ii).ZSalience_X = bsxfun(@times,pls_res(ii).ZSalience_X(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).Salience_Y = bsxfun(@times,pls_res(ii).Salience_Y(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).Salience_X = bsxfun(@times,pls_res(ii).Salience_X(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).ZSalience_Y = bsxfun(@times,pls_res(ii).ZSalience_Y(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).latent_Y =  bsxfun(@times,pls_res(ii).latent_Y(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).latent_X =  bsxfun(@times,pls_res(ii).latent_X(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).latent_Yo =  bsxfun(@times,pls_res(ii).latent_Yo(:,ind(ii,:)),sg(ii,:));
+    pls_sort(ii).latent_Xo =  bsxfun(@times,pls_res(ii).latent_Xo(:,ind(ii,:)),sg(ii,:));
    
 end
 
@@ -150,8 +147,6 @@ pred_scores_Y = reshape([pls_sort.latent_Yo],[ncomp,nsub]);
 pred_corvals = diag(corr(pred_scores_X',pred_scores_Y'));
 
 function [Salience_M,Salience_f,latent_M,latent_f,ZSalience_M,ZSalience_f,Sig_prob,Dcorr_pct,VSalience_M,VSalience_f] = PLS_between_MEG_fMRI(MEG_Map,BOLD_Map,num_regions,pvalue)
-
-disp('function running...')
 
 [Um,Dm,Vm] = svd(MEG_Map,'econ');
 [Uf,Df,Vf] = svd(BOLD_Map,'econ');
@@ -190,11 +185,9 @@ vMSalience_M = 0;
 vMSalience_f = 0;
 
 
-for bs = 1:100
+for bs = 1:1000
     %bs
     
-    disp(['bs ' num2str(bs)]);
-
     isub = ceil(size(MEG_Map,1)*rand(1,size(MEG_Map,1)));
     
     [bUm,bDm,bVm] = svd(MEG_Map(isub,:),'econ');
