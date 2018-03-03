@@ -1,7 +1,12 @@
+date = datetime();
+date = [num2str(date.Year), '.', num2str(date.Month), '.', num2str(date.Day), '_', num2str(date.Hour), '.', num2str(date.Minute)];
+
 [status,user_scripts] = system('echo $JE_packages');
 user_scripts =  regexprep(user_scripts,'[\n\r]+','');
 
 addpath(fullfile(user_scripts, 'Nasim_PLS'));
+
+cd(fullfile(user_scripts, 'Nasim_PLS'));
 
 pipe = 2;
 subj_path = '/global/home/hpc3586/SART_data/SART_behav/compiled_mat/outlier_rm.csv';
@@ -48,3 +53,5 @@ end
 % 1= (column wise) mean centring  of X and Y 
 % 2= zscore X and Y 
 [result.avg_ZSalience_X, result.avg_ZSalience_Y, result.pred_scores_X, result.pred_scores_Y, result.pls_out] = pls_nasim(X, Y, 1);
+
+save([date '__' 'plsResults.mat'], 'result')
